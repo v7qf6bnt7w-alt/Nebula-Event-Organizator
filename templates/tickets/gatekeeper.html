@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Control de acceso · Nébula{% endblock %}
+{% block extra_head %}<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" defer></script>{% endblock %}
+{% block content %}<section class="simple-page gate-page"><div class="eyebrow">SOLO PERSONAL AUTORIZADO</div><h1>Control de <span>acceso.</span></h1><p>Escaneá el QR de la entrada para validar el acceso. Cada entrada puede usarse una sola vez.</p><div id="reader"></div><div class="gate-controls"><button class="button button-primary" id="start-scanner" type="button">Activar cámara</button><input id="manual-token" placeholder="O pegá el código QR"><button class="button button-light" id="check-manual" type="button">Validar código</button></div><div id="scan-result" aria-live="polite"></div></section>{% endblock %}
+{% block scripts %}{% load static %}<script src="{% static 'tickets/gatekeeper.js' %}" defer></script>{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block title %}{{ title }} · Nébula Organizadores{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'tickets/admin.css' %}">{% endblock %}
+{% block branding %}<a class="admin-brand" href="{% url 'organizer_dashboard' %}"><span class="admin-brand-mark">N</span><span>NÉBULA<span>.</span><small>EVENTOS · ORGANIZACIÓN</small></span></a>{% endblock %}
+{% block nav-global %}<a class="admin-dashboard-link" href="{% url 'organizer_dashboard' %}">← Volver al panel</a>{% endblock %}

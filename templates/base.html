@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10101a">
+  <title>{% block title %}Nébula · Experiencias en vivo{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'tickets/app.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'event_list' %}"><span class="brand-mark">N</span><span>NÉBULA<span class="brand-dot">.</span></span></a>
+    <nav><a href="{% url 'event_list' %}">Eventos</a><a href="{% url 'retrieve_ticket' %}">Mis entradas</a><a class="nav-admin" href="{% url 'organizer_dashboard' %}">Organizadores ↗</a></nav>
+  </header>
+  <main>
+    {% if messages %}<div class="messages">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer><a class="brand footer-brand" href="{% url 'event_list' %}"><span class="brand-mark">N</span><span>NÉBULA<span class="brand-dot">.</span></span></a><span>Momentos que hacen historia.</span><span>© {% now "Y" %} Nébula Events</span></footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

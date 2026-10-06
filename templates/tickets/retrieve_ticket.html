@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}Recuperar entrada · Nébula{% endblock %}
+{% block content %}<section class="simple-page retrieve-page"><div class="eyebrow">SIEMPRE A MANO</div><h1>¿Perdiste tu <span>entrada?</span></h1><p>Dejanos tu correo de compra y te reenviamos el acceso digital.</p><form method="post" action="{% url 'retrieve_ticket' %}" class="retrieve-form">{% csrf_token %}<label>Correo de compra<input type="email" name="email" autocomplete="email" required placeholder="nombre@email.com"></label><label>Número de orden <span>OPCIONAL</span><input name="order_id" placeholder="UUID de la orden"></label><button class="button button-primary" type="submit">Enviar mis entradas <span>→</span></button></form></section>{% endblock %}

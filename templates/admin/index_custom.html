@@ -1,0 +1,9 @@
+{% extends "admin/index.html" %}
+{% load static %}
+{% block content %}
+<div class="admin-index-hero">
+  <div><span class="admin-kicker">CENTRO DE OPERACIONES</span><h1>Tu próxima gran historia<br>empieza acá<span>.</span></h1><p>Gestioná eventos, entradas y pagos desde un solo lugar.</p><a class="admin-primary-action" href="{% url 'organizer_dashboard' %}">Abrir resumen de actividad <b>↗</b></a></div>
+  <div class="admin-index-orbit"><i></i><strong>N<span>·</span></strong><small>EN VIVO</small></div>
+</div>
+{{ block.super }}
+{% endblock %}

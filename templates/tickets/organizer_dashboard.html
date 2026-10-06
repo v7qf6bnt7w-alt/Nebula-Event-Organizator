@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Panel organizador · Nébula{% endblock %}
+{% block content %}
+<section class="organizer-shell">
+  <div class="organizer-welcome">
+    <div>
+      <div class="eyebrow"><span class="live-dot"></span> ESPACIO DE ORGANIZACIÓN</div>
+      <h1>Hola, {{ request.user.first_name|default:request.user.username }}<span>.</span></h1>
+      <p>Todo lo que está pasando con tus eventos, en un solo lugar.</p>
+    </div>
+    <div class="welcome-actions"><a class="button button-primary" href="{% url 'admin:tickets_event_add' %}"><span>＋</span> Crear evento</a><a class="organizer-quiet-link" href="{% url 'admin:index' %}">Administración completa ↗</a></div>
+  </div>
+  <div class="organizer-stat-grid">
+    <article class="organizer-stat stat-highlight"><span>RECAUDACIÓN APROBADA</span><strong>${{ revenue|floatformat:0 }}</strong><small>Ingresos confirmados</small><i>↗</i></article>
+    <article class="organizer-stat"><span>ENTRADAS VENDIDAS</span><strong>{{ tickets_sold }}</strong><small>Personas listas para vivirlo</small><i>◉</i></article>
+    <article class="organizer-stat"><span>EVENTOS ACTIVOS</span><strong>{{ published_events|stringformat:"02d" }}</strong><small>{{ total_events }} eventos en total</small><i>✳</i></article>
+    <article class="organizer-stat"><span>ÓRDENES PENDIENTES</span><strong>{{ pending_orders }}</strong><small>Esperando confirmación</small><i>◷</i></article>
+  </div>
+  <div class="organizer-content-grid">
+    <section class="organizer-panel sales-panel">
+      <div class="organizer-panel-heading"><div><div class="eyebrow">MOVIMIENTO</div><h2>Ritmo de ventas</h2></div><span class="panel-period">ÚLTIMOS 7 DÍAS</span></div>
+      <div class="sales-chart" role="img" aria-label="Recaudación diaria durante los últimos siete días">{% for point in sales_week %}<div class="chart-day" title="{{ point.label }} · ${{ point.amount|floatformat:2 }}"><div class="chart-track"><span style="--bar-height:{{ point.height }}%"></span></div><small>{{ point.label }}</small></div>{% endfor %}</div>
+      <div class="chart-summary"><span>Recaudación total</span><strong>${{ revenue|floatformat:2 }}</strong></div>
+    </section>
+    <section class="organizer-panel shortcuts-panel">
+      <div class="organizer-panel-heading"><div><div class="eyebrow">ACCESOS RÁPIDOS</div><h2>Tu operación</h2></div></div>
+      <a class="shortcut-row" href="{% url 'admin:tickets_event_changelist' %}"><span class="shortcut-icon">✳</span><span><strong>Eventos</strong><small>Fechas, flyers y detalles</small></span><b>↗</b></a>
+      <a class="shortcut-row" href="{% url 'admin:tickets_tickettype_changelist' %}"><span class="shortcut-icon violet-icon">◇</span><span><strong>Entradas y precios</strong><small>Tipos, cupos y promociones</small></span><b>↗</b></a>
+      <a class="shortcut-row" href="{% url 'admin:tickets_seat_changelist' %}"><span class="shortcut-icon coral-icon">⌖</span><span><strong>Mapa de lugares</strong><small>Ubicaciones y disponibilidad</small></span><b>↗</b></a>
+      <a class="shortcut-row" href="{% url 'admin:tickets_discountcode_changelist' %}"><span class="shortcut-icon">％</span><span><strong>Códigos de descuento</strong><small>Beneficios para tu comunidad</small></span><b>↗</b></a>
+      <a class="shortcut-row" href="{% url 'admin:tickets_order_changelist' %}"><span class="shortcut-icon violet-icon">↗</span><span><strong>Pagos y órdenes</strong><small>{{ approved_orders }} compras aprobadas</small></span><b>↗</b></a>
+      <a class="shortcut-row" href="{% url 'gatekeeper' %}"><span class="shortcut-icon coral-icon">▦</span><span><strong>Control de acceso</strong><small>Escáner QR para el ingreso</small></span><b>↗</b></a>
+    </section>
+  </div>
+  <section class="organizer-panel orders-panel">
+    <div class="organizer-panel-heading"><div><div class="eyebrow">ACTIVIDAD RECIENTE</div><h2>Últimas órdenes</h2></div><a class="table-view-all" href="{% url 'admin:tickets_order_changelist' %}">Ver todas <span>→</span></a></div>
+    <div class="table-scroll"><table class="orders-table"><thead><tr><th>COMPRADOR</th><th>EVENTO</th><th>FECHA</th><th>TOTAL</th><th>ESTADO</th></tr></thead><tbody>{% for order in recent_orders %}<tr><td><strong>{{ order.buyer_name }}</strong><small>{{ order.buyer_email }}</small></td><td>{{ order.event.title }}</td><td>{{ order.created_at|date:"d M · H:i" }}</td><td>${{ order.total|floatformat:2 }}</td><td><span class="status-pill status-{{ order.status }}">{{ order.get_status_display }}</span></td></tr>{% empty %}<tr><td colspan="5" class="no-orders">Las compras aparecerán acá cuando publiques tu primer evento.</td></tr>{% endfor %}</tbody></table></div>
+  </section>
+</section>
+{% endblock %}

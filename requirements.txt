@@ -1,0 +1,6 @@
+Django>=5.2,<6.0
+mercadopago>=2.2,<3.0
+qrcode[pil]>=8.0,<9.0
+django-cors-headers>=4.7,<5.0
+python-dotenv>=1.1,<2.0
+whitenoise>=6.9,<7.0
