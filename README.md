@@ -27,6 +27,29 @@ SQLite creates the `db.sqlite3` file in the project directory automatically
 when you run migrations. No separate database server or database credentials
 are required.
 
+## Deploy to Render
+
+Create a Render **Web Service** for this repository and use:
+
+- **Build command:** `pip install -r requirements.txt && python manage.py collectstatic --no-input`
+- **Start command:** `python manage.py migrate && gunicorn config.wsgi:application`
+
+Set these environment variables in Render:
+
+- `DJANGO_SECRET_KEY`: a strong, unique secret.
+- `DJANGO_DEBUG`: `False`.
+- `DJANGO_ALLOWED_HOSTS`: your Render hostname and any custom domain, comma-separated.
+- `SITE_URL`: the public HTTPS URL of the service.
+- `MERCADOPAGO_ACCESS_TOKEN` and `MERCADOPAGO_WEBHOOK_SECRET`: production credentials.
+- `EMAIL_BACKEND`: `django.core.mail.backends.smtp.EmailBackend`, plus your SMTP host and credentials.
+
+SQLite data must live on a persistent disk. Attach one to the service (for
+example, mounted at `/var/data`) and set `SQLITE_DATABASE_PATH` to
+`/var/data/db.sqlite3`. Keep the service to one instance: SQLite is not suitable
+for shared storage across multiple instances or high-concurrency sales.
+Schedule `python manage.py send_ticket_emails` as a recurring job or run it
+under a process supervisor.
+
 Manage events, ticket types, venue seats, promo codes, and orders at
 `/admin/`. Publish an event and add one or more active ticket types before
 opening its public event page. Upload flyers to an image host and set the
