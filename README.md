@@ -3,7 +3,7 @@
 Django event management and ticketing starter for Argentina. Includes a public
 event catalog, ticket tiers and seat selection, Mercado Pago Checkout Pro,
 payment webhooks, signed QR tickets, staff check-in, and ticket email delivery.
-Development uses SQLite; the Django ORM can use PostgreSQL in production.
+Development and production use SQLite through the Django ORM.
 
 The public experience is at `/`; organizers use the staff-only activity
 dashboard at `/organizer/` and the fully-featured management interface at
@@ -22,6 +22,10 @@ python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
 ```
+
+SQLite creates the `db.sqlite3` file in the project directory automatically
+when you run migrations. No separate database server or database credentials
+are required.
 
 Manage events, ticket types, venue seats, promo codes, and orders at
 `/admin/`. Publish an event and add one or more active ticket types before
@@ -70,9 +74,10 @@ order supports one-time check-in for each attendee independently.
 
 - Generate a strong unique `DJANGO_SECRET_KEY`; set `DJANGO_DEBUG=False` and
   configure `DJANGO_ALLOWED_HOSTS`, HTTPS, SMTP, and `CORS_ALLOWED_ORIGINS`.
-- Switch `DATABASES["default"]` to PostgreSQL for production workloads.
+- Back up and persist `db.sqlite3` across deployments; do not commit the
+  database file.
 - Run `python manage.py check --deploy` and `python manage.py collectstatic`.
 - Serve uploaded flyer assets from a managed media/object-storage service.
 - The ticket QR contains a Django-signed token; keep the signing key private.
-- SQLite serializes writes. Use PostgreSQL for concurrent high-volume ticket
-  sales and validate load and payment-provider limits before launch.
+- SQLite serializes writes, so validate database capacity, load, and
+  payment-provider limits before launch.
